@@ -3,6 +3,7 @@ import time
 import prueba
 import aemet
 import canciones
+from os import remove
 TOKEN = "801717901:AAE7f2lehXmP19B0EklfSnclw3DfAs5e8iY"
 
 bot = telebot.TeleBot(TOKEN)
@@ -141,14 +142,29 @@ def command_aemet(t):
 	else:
 		bot.send_message(cid, " Ciudad no encontrada ")
 
+@bot.message_handler(commands=['spotify'])
+def command_spotify(s):
+	cid = s.chat.id
+	playlist = s.text.split('/spotify',1)[1].strip()
+	if "https://open.spotify.com/" in playlist:
+		tracks = []
+		tracks = canciones.tracks(playlist)
+		for k in tracks:
+			audio = open(k, "rb")
+			print(k)
+			bot.send_audio(cid, audio)
+			remove(k)
+	else:
+		bot.send_message(cid, " Playlist introducida incorrecta ")
+
+
+
+
+
+
 
 bot.polling()
-#@bot.message_handler(commands=['spotify'])
-#def command_spotify(s):
-#
-#	cid = s.chat.id
-#	playlist = s.text.split('/aemet')[1].strip()
-#	canciones.tracks(playlist)
+
 
 
 
