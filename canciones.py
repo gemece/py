@@ -115,7 +115,8 @@ def api_youtube_search(options):
 	search_response = youtube.search().list(
 	  q=options,
 	  part="id,snippet",
-	  #maxResults=options.max_results,
+	  maxResults=1,
+	  fields="items/id",
 	  order="viewCount"
 	).execute()
 	#f = open("kk.txt","w")
